@@ -66,13 +66,13 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
             tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 
 apt-get update
-apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 # install GPU Drivers
 apt-get -y install cuda-drivers
 
 # install CUDA
-apt-get install cuda
+apt-get -y install cuda
 # add cuda to path
 export PATH=/usr/local/cuda-11.7/bin${PATH:+:${PATH}}
 export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64 ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
