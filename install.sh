@@ -60,10 +60,10 @@ dpkg -i cuda-keyring_1.0-1_all.deb
 
 # install cuda container keys
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
       && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
             sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-            sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+            tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 
 apt-get update
 apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
@@ -78,8 +78,8 @@ export PATH=/usr/local/cuda-11.7/bin${PATH:+:${PATH}}
 export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64 ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 
 # install cuda container 
-sudo apt-get install -y nvidia-docker2
-sudo systemctl restart docker
+apt-get install -y nvidia-docker2
+systemctl restart docker
 
 # install gitlab runner 
 # Not sure this will allow you to use docker executor
