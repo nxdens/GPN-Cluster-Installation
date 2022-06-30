@@ -67,6 +67,9 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
 
 apt-get update
 apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+# non-blocking docker
+docker pull nxdens/gpn-pytorch:latest &
+Td=${!}
 
 # install GPU Drivers
 apt-get -y install cuda-drivers
@@ -79,7 +82,7 @@ export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64 ${LD_LIBRARY_PATH:+:${LD_LIBRA
 
 # install cuda container 
 apt-get install -y nvidia-docker2
-systemctl restart docker
+
 
 # install gitlab runner 
 # Not sure this will allow you to use docker executor
@@ -99,5 +102,10 @@ gitlab-runner start
 gitlab-runner register --url https://gitlab.linghai.me/ --registration-token a1RcMXHnsbASPk6X4iwZ
 
 rm -f get-pip.py
-rm cuda-keyring_1.0-1_all.deb 
+rm cuda-keyring_1.0-1_all.deb
+
+# wait till docker pull is finished 
+wait ${Td} 
+systemctl restart docker
+
 reboot
